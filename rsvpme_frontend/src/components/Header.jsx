@@ -1,9 +1,10 @@
+import './Header.css'
 
 function Header() {
     return (
-        <div>
+        <div className="Header">
             <div>
-                <img src="" alt="" />
+                <h1>RSVPME</h1>
             </div>
             <div>
                 <button>button 1</button>
