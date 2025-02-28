@@ -21,8 +21,8 @@ RSVPME is a modern web application that simplifies the process of managing weddi
 
 ### Backend:
 - 🐍 Django REST Framework (DRF) – API development
-- 🛢️ Google Firestore - Database
-<!-- - 🛢️ PostgreSQL – Database management
+- 🛢️ PostgreSQL - Database
+<!-- 
 - 🔒 JWT Authentication – Secure login and session handling
 - 📩 Celery & Redis – Email notifications and background tasks -->
 
