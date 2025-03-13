@@ -1,0 +1,7 @@
+.image-container {
+    height: 500px;
+    background-color: #a5a5a5;
+    border-radius: 30px;
+    background-image: url('/src/resources/bg.jpg');
+    background-position: center;
+}

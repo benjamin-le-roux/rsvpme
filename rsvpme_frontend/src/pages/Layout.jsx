@@ -4,20 +4,15 @@ import './../css/Layout.css'
 const Layout = () => (
     <>
         <div className='nav-bar-container'>
-                <div className='nav-bar'>
-                    <div>
-                        <h1>RSVPME</h1>
-                    </div>
-                    <div>
-                        <Link className='nav-button' to="/">HOME</ Link>
-                        <Link className='nav-button' to="/info">RSVP</ Link>
-                    </div>
-                </div>
+            <div className='nav-bar'>
+                <Link className='nav-button' to="/">HOME</ Link>
+                <h1 className='nav-title'>RSVPME</h1>
+                <Link className='nav-button' to="/rsvp">RSVP</ Link>
             </div>
-        <div className='image-container'>
         </div>
-
-        <Outlet />
+        <div className="page-container">
+            <Outlet />
+        </div>
     </>
 
 )

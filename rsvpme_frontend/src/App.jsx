@@ -2,7 +2,7 @@ import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './pages/Layout'
 import Home from './pages/Home'
-import Info from './pages/Info'
+import Rsvp from './pages/Rsvp'
 
 function App() {
 
@@ -11,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path='info' element={<Info />} />
+          <Route path='rsvp' element={<Rsvp />} />
         </Route>
       </Routes>
     </BrowserRouter>

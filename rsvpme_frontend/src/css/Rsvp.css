@@ -1,0 +1,14 @@
+.rsvp-main {
+    padding: 20px;
+    background-color: #838383;
+}
+
+.rsvp-block {
+    max-width: 800px;
+    margin: auto;
+    background-color: #fff;
+    height: 500px;
+    
+    border: solid #fff;
+    border-radius: 15px;
+}
