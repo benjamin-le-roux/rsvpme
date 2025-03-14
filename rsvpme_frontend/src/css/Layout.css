@@ -40,5 +40,5 @@
 }
 
 .nav-button:hover {
-    color: #922525;
+    color: var(--highlight-colour);
 }

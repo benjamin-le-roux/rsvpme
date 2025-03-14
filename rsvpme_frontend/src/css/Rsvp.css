@@ -1,6 +1,8 @@
 .rsvp-main {
     padding: 20px;
-    background-color: #838383;
+    /* background-color: #838383; */
+
+    font-family: 'Poppins';
 }
 
 .rsvp-block {
@@ -9,6 +11,31 @@
     background-color: #fff;
     height: 500px;
     
-    border: solid #fff;
-    border-radius: 15px;
+    /* border: outset #fff; */
+    border-radius: 30px;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rsvp-main h2 {
+    font-weight: 600;
+    
+}
+
+.rsvp-main button {
+    font-weight: 600;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    border: solid 2px #010101;
+}
+
+
+.rsvp-main button:hover {
+    color: #fff;
+    border-color: var(--highlight-clour);
+    background-color: var(--highlight-colour);
 }
