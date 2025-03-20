@@ -1,15 +1,48 @@
 import './../css/Rsvp.css'
 import { useEffect, useState, useContext } from 'react';
 import { isSessionUuidSet, getSessionUuid } from '../session';
-import { getGuest } from '../api';
+import { getGuest, searchGuest } from '../api';
 import GuestSessionContext from '../context';
 
 const RsvpSearch = () => {
+    const [searchPhrase, setSearchPhrase] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
 
-    
+    const [isLoading, setIsLoading] = useState(false)
+
+    const searchNames = async () => {
+        if (!searchPhrase || isLoading) return
+
+        setIsLoading(true)
+        setSearchResults([])
+        try {
+            await searchGuest(searchPhrase).then((results) => {
+                setSearchResults(results)})
+        } catch (error) {
+            
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
 
     return (<>
-        
+        <input
+            type="text"
+            placeholder='Search Name'
+            value={searchPhrase}
+            onChange={(e) => setSearchPhrase(e.target.value)}
+        />
+        <button onClick={searchNames} disabled={isLoading}>
+            {isLoading ? 'Loading...' : 'Search'}
+        </button>
+        <>
+        {
+            searchResults.map(result => (
+                <p>{result.name}</p>
+            ))
+        }
+        </>
     </>)
 };
 
@@ -32,7 +65,8 @@ const Rsvp = () => {
         <div className="rsvp-main">
         
             <div className='rsvp-block'>
-                {guestSession ? <RsvpStatus guest={guestSession.guest} /> : <RsvpSearch />}
+                {false ? <RsvpStatus guest={guestSession.guest} /> : <RsvpSearch />}
+                {/* {guestSession ? <RsvpStatus guest={guestSession.guest} /> : <RsvpSearch />} */}
             </div>
 
         </div>

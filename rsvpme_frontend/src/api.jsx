@@ -17,3 +17,9 @@ export async function getGuest() {
 //     if (!response.ok) throw new Error('Failed to fetch guest data')
 //     return response.json()
 // }
+
+export async function searchGuest(nameSearch) {
+    const response = await fetch(API_BASE_URL + '/guests/?name=' + nameSearch)
+    if (!response.ok) throw new Error('Failed to fetch guest search data')
+    return response.json()
+}
