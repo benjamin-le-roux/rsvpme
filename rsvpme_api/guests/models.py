@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 import uuid
 
 class Guest(models.Model):
@@ -11,6 +12,7 @@ class Guest(models.Model):
     email = models.EmailField()
     attending = models.BooleanField(default=False)
     companions = models.IntegerField(default=0)
+    created_at = models.DateTimeField(default=now)
     
 
     def __str__(self):
@@ -24,12 +26,16 @@ class Event(models.Model):
     imgUrl = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name
+        return self.title
 
 class Session(models.Model):
     session_id = models.UUIDField(
         default = uuid.uuid4,
         unique = True,
+        editable = False
+    )
+    created_at = models.DateTimeField(
+        default=now,
         editable = False
     )
     guest = models.ForeignKey(

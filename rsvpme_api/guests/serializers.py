@@ -13,7 +13,15 @@ class EventSerializer(serializers.ModelSerializer):
 
 class SessionSerializer(serializers.ModelSerializer):
     guest = GuestSerializer(read_only=True)
+    guest_id = serializers.PrimaryKeyRelatedField(
+        queryset = Guest.objects.all(),
+        write_only=True,
+        source='guest'
+    )
 
     class Meta:
         model = Session
         fields = '__all__'
+
+    def create(self, validated_data):
+        return Session.objects.create(**validated_data)
