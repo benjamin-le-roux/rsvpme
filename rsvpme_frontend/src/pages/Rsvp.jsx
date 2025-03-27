@@ -17,7 +17,8 @@ const RsvpSearch = () => {
         setSearchResults([])
         try {
             await searchGuest(searchPhrase).then((results) => {
-                setSearchResults(results)})
+                setSearchResults(results)
+            })
         } catch (error) {
             
         } finally {
@@ -27,22 +28,33 @@ const RsvpSearch = () => {
 
 
     return (<>
-        <input
-            type="text"
-            placeholder='Search Name'
-            value={searchPhrase}
-            onChange={(e) => setSearchPhrase(e.target.value)}
-        />
-        <button onClick={searchNames} disabled={isLoading}>
-            {isLoading ? 'Loading...' : 'Search'}
-        </button>
-        <>
+        <div className='search-bar'>
+            <input
+                type="text"
+                className='search-input'
+                placeholder='Search Name'
+                value={searchPhrase}
+                onChange={(e) => setSearchPhrase(e.target.value)}
+            />
+            <button onClick={searchNames} disabled={isLoading} className='search-button'>
+                {isLoading ? 'Loading...' : 'Search'}
+            </button>
+        </div>
+        <div className='search-res-container'>
         {
             searchResults.map(result => (
-                <p>{result.name}</p>
+                <div className='search-res-item'>
+                    <div className='search-res-row-1'>
+                        <p>{result.attending ? 'JOINING' : 'NOT JOINING' }</p>
+                    </div>
+                    <div className='search-res-row-2'>
+                        <p className='search-res-name'>{result.name}</p>
+                        <button className='search-res-item-button'>This is me</button>
+                    </div>
+                </div>
             ))
         }
-        </>
+        </div>
     </>)
 };
 
