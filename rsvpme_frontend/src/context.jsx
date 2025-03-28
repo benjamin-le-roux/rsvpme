@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { isSessionUuidSet, getSessionUuid, setSessionUuid } from "./session";
+import { isSessionUuidSet, getSessionUuid } from "./session";
 import { getGuestSession } from "./api";
 
 const GuestSessionContext = createContext();

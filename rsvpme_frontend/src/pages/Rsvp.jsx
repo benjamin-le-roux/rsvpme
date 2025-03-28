@@ -1,7 +1,7 @@
 import './../css/Rsvp.css'
 import { useEffect, useState, useContext } from 'react';
-import { isSessionUuidSet, getSessionUuid } from '../session';
-import { getGuest, searchGuest } from '../api';
+import { createSessionFromGuestId } from '../session';
+import { getGuest, searchGuest, createGuestSession } from '../api';
 import GuestSessionContext from '../context';
 
 const RsvpSearch = () => {
@@ -9,6 +9,8 @@ const RsvpSearch = () => {
     const [searchResults, setSearchResults] = useState([]);
 
     const [isLoading, setIsLoading] = useState(false)
+
+    const { guestSession, setGuestSession } = useContext(GuestSessionContext);
 
     const searchNames = async () => {
         if (!searchPhrase || isLoading) return
@@ -24,6 +26,16 @@ const RsvpSearch = () => {
         } finally {
             setIsLoading(false)
         }
+    }
+
+    const updateAndSetSession = (guest_id) => {
+        createSessionFromGuestId(guest_id).then((session_obj) => {
+            
+            console.log('About to set session context:', session_obj)
+            setGuestSession(session_obj)
+
+            console.log('Guest session:', guestSession)
+        })
     }
 
 
@@ -43,13 +55,13 @@ const RsvpSearch = () => {
         <div className='search-res-container'>
         {
             searchResults.map(result => (
-                <div className='search-res-item'>
+                <div key={result.id} className='search-res-item'>
                     <div className='search-res-row-1'>
-                        <p>{result.attending ? 'JOINING' : 'NOT JOINING' }</p>
+                        <p className='search-res-name'>{result.name}</p>
                     </div>
                     <div className='search-res-row-2'>
-                        <p className='search-res-name'>{result.name}</p>
-                        <button className='search-res-item-button'>This is me</button>
+                        <p className={"search-res-att " + (result.attending ? 'y' : 'n')}>{result.attending ? 'JOINING' : 'NOT JOINING' }</p>
+                        <button className='search-res-item-button' onClick={() => updateAndSetSession(result.id)}>This is me</button>
                     </div>
                 </div>
             ))
@@ -71,14 +83,13 @@ const RsvpStatus = ({guest}) => {
 
 const Rsvp = () => {
     
-    const { guestSession } = useContext(GuestSessionContext);
+    const { guestSession, setGuestSession } = useContext(GuestSessionContext);
 
     return (
         <div className="rsvp-main">
         
             <div className='rsvp-block'>
-                {false ? <RsvpStatus guest={guestSession.guest} /> : <RsvpSearch />}
-                {/* {guestSession ? <RsvpStatus guest={guestSession.guest} /> : <RsvpSearch />} */}
+                {guestSession ? <RsvpStatus guest={guestSession.guest} /> : <RsvpSearch />}
             </div>
 
         </div>
