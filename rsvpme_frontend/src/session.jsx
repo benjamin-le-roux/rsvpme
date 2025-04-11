@@ -13,12 +13,12 @@ export const getSessionUuid = () => Cookies.get(SESSION_KEY);
 
 export const isSessionUuidSet = () => !!getSessionUuid();
 
-export const clearSessionUuid = () => Cookies.remove(SESSION_KEY);
+export const clearSessionUuid = () => Cookies.remove(SESSION_KEY)
 
 export const  createSessionFromGuestId = async (guestId) => {
     console.log("I got this guest id: " + guestId)
-    return await createGuestSession(guestId).then(
-        response => {
+    return createGuestSession(guestId).then(
+        (response) => {
             console.log('Got response', response)
             if (response.session_id) {
                 console.log('Setting session: ' + response.session_id)

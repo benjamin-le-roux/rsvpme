@@ -5,20 +5,20 @@ import { getGuestSession } from "./api";
 const GuestSessionContext = createContext();
 
 export const GuestSessionProvider = ({ children }) => {
-    const [guestSession, setGuestSession] = useState(null);
+    const [guestSession, setGuestSessionContext] = useState(null);
 
     useEffect(() => {
         const sessionIsSet = isSessionUuidSet();
         const sessionUuid = getSessionUuid();
 
         if (sessionIsSet) {
-            getGuestSession(sessionUuid).then(setGuestSession);
+            getGuestSession(sessionUuid).then(setGuestSessionContext);
         } 
     
     }, [])
 
     return (
-        <GuestSessionContext.Provider value={{ guestSession, setGuestSession }}>
+        <GuestSessionContext.Provider value={{ guestSession, setGuestSessionContext }}>
             {children}
         </GuestSessionContext.Provider>
     );

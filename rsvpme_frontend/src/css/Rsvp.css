@@ -116,3 +116,8 @@ button:hover {
 .search-res-att.n {
     color: rgb(133, 33, 33);
 }
+
+.loading {
+    opacity: 0.2;
+    pointer-events: none;
+}

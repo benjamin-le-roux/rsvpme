@@ -1,8 +1,11 @@
 import './../css/Rsvp.css'
 import { useEffect, useState, useContext } from 'react';
-import { createSessionFromGuestId } from '../session';
+import { clearSessionUuid, createSessionFromGuestId, setSessionCookie } from '../session';
 import { getGuest, searchGuest, createGuestSession } from '../api';
 import GuestSessionContext from '../context';
+
+
+import { useNavigate, Routes, Route, Outlet, Link } from 'react-router-dom'
 
 const RsvpSearch = () => {
     const [searchPhrase, setSearchPhrase] = useState('');
@@ -10,7 +13,15 @@ const RsvpSearch = () => {
 
     const [isLoading, setIsLoading] = useState(false)
 
-    const { guestSession, setGuestSession } = useContext(GuestSessionContext);
+    const { guestSession, setGuestSessionContext } = useContext(GuestSessionContext);
+
+    const navigate = useNavigate();
+
+    useEffect(()=> {
+        if (!isLoading && guestSession) {
+            navigate('/rsvp/status')
+        }
+    }, [guestSession, navigate])
 
     const searchNames = async () => {
         if (!searchPhrase || isLoading) return
@@ -28,15 +39,44 @@ const RsvpSearch = () => {
         }
     }
 
-    const updateAndSetSession = (guest_id) => {
-        createSessionFromGuestId(guest_id).then((session_obj) => {
-            
-            console.log('About to set session context:', session_obj)
-            setGuestSession(session_obj)
+    const updateAndSetSession = (guestId) => {
 
-            console.log('Guest session:', guestSession)
-        })
+        setIsLoading(true)
+
+        createGuestSession(guestId).then(
+            (response) => {
+                console.log('Got response', response)
+                if (response.session_id) {
+                    console.log('Setting session: ' + response.session_id)
+                    setSessionCookie(response.session_id)
+                    setGuestSessionContext(response)
+
+
+                    setIsLoading(false)
+
+                    // return response
+                } else {
+                    throw new Error('Invalid session response');
+                }
+            }
+        )
+
+        // createSessionFromGuestId(guest_id).then((session_obj) => {
+
+        //     console.log('About to set session context:', session_obj)
+
+        //     setGuestSessionContext(session_obj)
+
+        //     console.log('Guest session:', guestSession)
+
+            
+
+
+        //     return session_obj;
+        // })
+
     }
+
 
 
     return (<>
@@ -52,7 +92,7 @@ const RsvpSearch = () => {
                 {isLoading ? 'Loading...' : 'Search'}
             </button>
         </div>
-        <div className='search-res-container'>
+        <div className={'search-res-container ' + (isLoading ? "loading" : "")}>
         {
             searchResults.map(result => (
                 <div key={result.id} className='search-res-item'>
@@ -70,30 +110,72 @@ const RsvpSearch = () => {
     </>)
 };
 
-const RsvpStatus = ({guest}) => {
-    
+const RsvpStatus = () => {
+
+    const { guestSession, setGuestSessionContext } = useContext(GuestSessionContext);
+
+    console.log('Guest Session LOG in Status', guestSession)
+
+    const navigate = useNavigate();
+
+    if (!guestSession) {
+        navigate('/rsvp/search')
+        return
+    }
+    const clearAndSearch = () => {
+        clearSessionUuid()
+        setGuestSessionContext('')
+    }
+
+    if (!guestSession) {
+        return (<>
+            <h1>IS LOADING!!!!</h1>
+        </>)
+    }
+
     return (<>
-        <h2>RSVP'd</h2>
-        <p>Hello {guest.name}</p>
-        <span>Attending: {guest.attending ? "Yes" : "No"}</span>
-        <p>Companions: {guest.companions}</p>
-        <button>RSVP ME</button>
+        <div>
+            <h2>RSVP'd</h2>
+            <p>Hello {guestSession.name}</p>
+            <span>Attending: {guestSession.attending ? "Yes" : "No"}</span>
+            <p>Companions: {guestSession.companions}</p>
+            <button>RSVP ME</button>
+            <button onClick={clearAndSearch}>BACK TO SEARCH!</button>
+        </div>
     </>)
 }
 
-const Rsvp = () => {
+const RsvpLayout = () => {
     
-    const { guestSession, setGuestSession } = useContext(GuestSessionContext);
+    // const { guestSession, setGuestSession } = useContext(GuestSessionContext);
 
     return (
         <div className="rsvp-main">
-        
             <div className='rsvp-block'>
-                {guestSession ? <RsvpStatus guest={guestSession.guest} /> : <RsvpSearch />}
+                <Outlet/>
             </div>
-
         </div>
     )
+    // return (
+    //     <div className="rsvp-main">
+        
+    //         <div className='rsvp-block'>
+    //             {guestSession ? <RsvpStatus guest={guestSession.guest} /> : <RsvpSearch />}
+    //         </div>
+
+    //     </div>
+    // )
 }
+
+const Rsvp = () => (
+    // <BrowserRouter>
+        <Routes>
+            <Route path='/' element={<RsvpLayout/>}>
+                <Route path="/status" element={<RsvpStatus />}/>
+                <Route path="/search" index element={<RsvpSearch />}/>
+            </Route>
+        </Routes>
+    // </BrowserRouter>
+)
 
 export default Rsvp
