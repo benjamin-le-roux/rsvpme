@@ -1,0 +1,19 @@
+.guests-container {
+    width: 95vw;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.guests-table {
+    padding: 15px;
+}
+
+.guests-table-header {
+    text-align: left;
+}
+
+.guests-table-row {
+    margin: 0 10;
+}

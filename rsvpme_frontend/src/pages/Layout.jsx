@@ -1,22 +1,7 @@
 import { Outlet, Link } from 'react-router-dom'
 import './../css/Layout.css'
 
-// ------------------
-
-import { getGuest } from '../api';
-
-        getGuest()
-        .then((guests) => {
-            console.log(guests)
-        })
-
-
-// ------------------
-
 const Layout = () => {
-
-
-
     return (<>
         <div className='nav-bar-container'>
             <div className='nav-bar'>
